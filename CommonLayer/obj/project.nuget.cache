@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "76WgVjBilX232txGgILOqyZL5odQsI5Q7m0O2PGY2cQ2kSf/rYJBy4wO7k+GDpM3ypUN0vrGddxa1EkamFGkrQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\amakuma6\\source\\repos\\FundooApplication\\CommonLayer\\CommonLayer.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\amakuma6\\.nuget\\packages\\experimental.system.messaging\\1.1.0\\experimental.system.messaging.1.1.0.nupkg.sha512"
+  ],
+  "logs": []
+}

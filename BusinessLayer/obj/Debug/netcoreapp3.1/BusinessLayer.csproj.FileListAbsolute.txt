@@ -1,0 +1,15 @@
+C:\Users\amakuma6\source\repos\FundooApplication\BusinessLayer\bin\Debug\netcoreapp3.1\BusinessLayer.deps.json
+C:\Users\amakuma6\source\repos\FundooApplication\BusinessLayer\bin\Debug\netcoreapp3.1\BusinessLayer.dll
+C:\Users\amakuma6\source\repos\FundooApplication\BusinessLayer\bin\Debug\netcoreapp3.1\BusinessLayer.pdb
+C:\Users\amakuma6\source\repos\FundooApplication\BusinessLayer\obj\Debug\netcoreapp3.1\BusinessLayer.csproj.AssemblyReference.cache
+C:\Users\amakuma6\source\repos\FundooApplication\BusinessLayer\obj\Debug\netcoreapp3.1\BusinessLayer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\amakuma6\source\repos\FundooApplication\BusinessLayer\obj\Debug\netcoreapp3.1\BusinessLayer.AssemblyInfoInputs.cache
+C:\Users\amakuma6\source\repos\FundooApplication\BusinessLayer\obj\Debug\netcoreapp3.1\BusinessLayer.AssemblyInfo.cs
+C:\Users\amakuma6\source\repos\FundooApplication\BusinessLayer\obj\Debug\netcoreapp3.1\BusinessLayer.csproj.CoreCompileInputs.cache
+C:\Users\amakuma6\source\repos\FundooApplication\BusinessLayer\obj\Debug\netcoreapp3.1\BusinessLayer.dll
+C:\Users\amakuma6\source\repos\FundooApplication\BusinessLayer\obj\Debug\netcoreapp3.1\BusinessLayer.pdb
+C:\Users\amakuma6\source\repos\FundooApplication\BusinessLayer\bin\Debug\netcoreapp3.1\CommonLayer.dll
+C:\Users\amakuma6\source\repos\FundooApplication\BusinessLayer\bin\Debug\netcoreapp3.1\RepositoryLayer.dll
+C:\Users\amakuma6\source\repos\FundooApplication\BusinessLayer\bin\Debug\netcoreapp3.1\RepositoryLayer.pdb
+C:\Users\amakuma6\source\repos\FundooApplication\BusinessLayer\bin\Debug\netcoreapp3.1\CommonLayer.pdb
+C:\Users\amakuma6\source\repos\FundooApplication\BusinessLayer\obj\Debug\netcoreapp3.1\BusinessLayer.csproj.CopyComplete
