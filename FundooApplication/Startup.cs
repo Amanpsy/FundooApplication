@@ -32,17 +32,17 @@ namespace FundooApplication
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+           
             services.AddDbContext<FundooContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:FundooDB"]));
-            services.AddControllers();
+          
+
             services.AddTransient<IUserRl, UserRl>();
             services.AddTransient <IUserBl, UserBl>();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
-            });
+            services.AddTransient<INoteRL, NoteRL>();
+            services.AddTransient<INoteBL, NoteBL>();
+            
 
             services.AddSwaggerGen(setup =>
             {
@@ -50,7 +50,7 @@ namespace FundooApplication
                 {
                     Scheme = "Bearer",
                     BearerFormat = "JWT",
-                    Name = "Authontication",
+                    Name = "Authentication",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.Http,
                     Description = "JWT Authorization !!!!! Enter your token and verify.",
@@ -79,16 +79,20 @@ namespace FundooApplication
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["My_precious_key_z_security"])),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JWT:Key"])),
                     ValidateIssuer = false,
-                    ValidateAudience = false
                    
-                };
+                    ValidateAudience = false
+                      
+            };
             });
+
+            services.AddControllers();
+
 
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -99,6 +103,8 @@ namespace FundooApplication
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
@@ -111,7 +117,7 @@ namespace FundooApplication
            
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Fundoo App");
             });
         }
     }

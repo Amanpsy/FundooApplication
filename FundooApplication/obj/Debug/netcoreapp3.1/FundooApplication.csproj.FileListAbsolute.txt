@@ -60,3 +60,4 @@ C:\Users\amakuma6\source\repos\FundooApplication\FundooApplication\bin\Debug\net
 C:\Users\amakuma6\source\repos\FundooApplication\FundooApplication\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll
 C:\Users\amakuma6\source\repos\FundooApplication\FundooApplication\bin\Debug\netcoreapp3.1\System.Text.Json.dll
 C:\Users\amakuma6\source\repos\FundooApplication\FundooApplication\bin\Debug\netcoreapp3.1\Experimental.System.Messaging.dll
+C:\Users\amakuma6\source\repos\FundooApplication\FundooApplication\bin\Debug\netcoreapp3.1\CloudinaryDotNet.dll

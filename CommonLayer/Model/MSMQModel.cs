@@ -10,7 +10,7 @@ namespace CommonLayer.Model
     public class MSMQModel
     {
         MessageQueue messagequeue = new MessageQueue();
-        public void sendData2Queue(string Token)
+        public void sendData2Queue(string token)
         {
 
             messagequeue.Path = @".\private$\Token";
@@ -22,37 +22,38 @@ namespace CommonLayer.Model
 
 
             messagequeue.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
-            messagequeue.ReceiveCompleted += Messagequeue_ReceiveCompleted;  //+= means Event
-            messagequeue.Send(Token);
+            messagequeue.ReceiveCompleted += MessageQueue_ReceiveCompleted; ;  //+= means Event
+            messagequeue.Send(token);
             messagequeue.BeginReceive();
             messagequeue.Close();
 
         }
 
-        private void Messagequeue_ReceiveCompleted(object sender, ReceiveCompletedEventArgs e)
+
+
+        private void MessageQueue_ReceiveCompleted(object sender, ReceiveCompletedEventArgs e)
         {
             try
             {
+
                 var msg = messagequeue.EndReceive(e.AsyncResult);
                 string token = msg.Body.ToString();
-                string subject = "Fundoo Application Reset Link";
+                string subject = "Fundoo Note Reset link";
                 string body = token;
                 var smtp = new SmtpClient("smtp.gmail.com")
                 {
                     Port = 587,
-                    Credentials = new NetworkCredential("amankrbridgelabz@gmail.com", "ixalqyhhnfzwodru"),
+                    Credentials = new NetworkCredential("amankrbridgelabz@gmail.com", "zrmijgwgjgshstje"),
                     EnableSsl = true,
-
 
 
 
                 };
 
                 smtp.Send("amankrbridgelabz@gmail.com", "amankrbridgelabz@gmail.com", subject, body);
-                    messagequeue.BeginReceive();
+
+                messagequeue.BeginReceive();
             }
-
-
 
             catch (Exception ex)
             {
@@ -61,6 +62,7 @@ namespace CommonLayer.Model
             }
         }
 
+    }
        
     }
-}
+

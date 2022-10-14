@@ -1,4 +1,6 @@
 ﻿using CommonLayer.Model;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Ini;
 using Microsoft.IdentityModel.Tokens;
 using RepositoryLayer.Context;
 using RepositoryLayer.Entities;
@@ -6,6 +8,7 @@ using RepositoryLayer.Interface;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Text;
 
@@ -14,13 +17,14 @@ namespace RepositoryLayer.Service
     public class UserRl : IUserRl
     {
         private readonly FundooContext fundooContext;
+        public IConfiguration Configuration { get; }
 
-        public UserRl(FundooContext fundooContext)
+        public UserRl(FundooContext fundooContext, IConfiguration configuration)
         {
             this.fundooContext = fundooContext;
+            this.Configuration = configuration;
         }
 
-        
 
         public UserEntity UserRegisteration(Registeration registeration)
         {
@@ -33,7 +37,7 @@ namespace RepositoryLayer.Service
                 userEntity.Password = registeration.Password;
                 fundooContext.UserTable.Add(userEntity);
                 int result = fundooContext.SaveChanges();
-                if(result > 0)
+                if (result > 0)
                 {
                     return userEntity;
                 }
@@ -57,7 +61,7 @@ namespace RepositoryLayer.Service
                 var result = this.fundooContext.UserTable.Where(u => u.Email == login.Email && u.Password == login.Password).FirstOrDefault();
                 if (result != null)
                 {
-                    return JWTToken(result.Email, result.UserId);
+                    return JWTToken(result.Email, result.UserID);
                 }
                 else
                 {
@@ -76,13 +80,13 @@ namespace RepositoryLayer.Service
         {
             try
             {
-                var emailCheck= fundooContext.UserTable.FirstOrDefault(a => a.Email == email);
+                var emailCheck = fundooContext.UserTable.FirstOrDefault(e => e.Email == email);
                 if (emailCheck != null)
                 {
-                    var Token= JWTToken(emailCheck.Email, emailCheck.UserId);
+                    var token = JWTToken(emailCheck.Email, emailCheck.UserID);
                     MSMQModel mSMQModel = new MSMQModel();
-                    mSMQModel.sendData2Queue(Token);
-                    return Token.ToString();
+                    mSMQModel.sendData2Queue(token);
+                    return token.ToString();
                 }
 
                 else
@@ -97,18 +101,41 @@ namespace RepositoryLayer.Service
             }
         }
 
+        public bool ResetPassword( string email,string password, string confirmPassword)
+        {
+            try
+            {
+                if (password.Equals(confirmPassword))
+                {
+                    var Result = fundooContext.UserTable.Where(e => e.Email == email).FirstOrDefault();
+                    Result.Password = confirmPassword;
+                    fundooContext.SaveChanges();
+                    return true;
+
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
 
 
-        private static string JWTToken(string Email, long UserId)
+        public string JWTToken(string email, long userId)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("My_precious_key_z_security");
+            var key = Encoding.ASCII.GetBytes(Configuration["JWT:Key"]);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim("Email", Email),
-                    new Claim("UserId",UserId.ToString())
+                    new Claim(ClaimTypes.Email, email),
+                    new Claim("userId", userId.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(12),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -122,6 +149,6 @@ namespace RepositoryLayer.Service
 
 
     }
-    }
+}
     
 

@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Interface;
 using CommonLayer.Model;
+using Microsoft.AspNetCore.Identity;
 using RepositoryLayer.Entities;
 using RepositoryLayer.Interface;
 using RepositoryLayer.Service;
@@ -45,6 +46,19 @@ namespace BusinessLayer.Service
             }
         }
 
+        public string JWTToken(string email, long userId)
+        {
+            try
+            {
+                return this.userRl.JWTToken(email, userId);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public string ForgetPassword(string email)
         {
             try
@@ -58,6 +72,19 @@ namespace BusinessLayer.Service
             }
         }
 
+        public bool ResetPassword(string email,string password,string confirmPassword)
+        {
+            try
+            {
+                return userRl.ResetPassword(email,password, confirmPassword);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        
 
     }
 
