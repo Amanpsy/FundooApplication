@@ -13,10 +13,10 @@ namespace BusinessLayer.Interface
         public List<NoteEntity> GetNote(long userId);
         public NoteEntity UpdateNote(long userId, long noteId, Note note);
         public bool DeleteNote(long userId, long noteId);
-        public NoteEntity PinnedNote(long userId,long noteId);
+        public NoteEntity PinnedNote(long noteId);
 
-        public NoteEntity ArchieveNote(long userId, long noteId);
-        public NoteEntity Trash(long userId, long noteId);
+        public NoteEntity ArchieveNote( long noteId);
+        public NoteEntity Trash( long noteId);
         public NoteEntity NoteColor(long noteId, string color);
 
         public NoteEntity Image(long noteId, IFormFile file);

@@ -70,11 +70,11 @@ namespace BusinessLayer.Service
                 throw ex;
             }
         }
-        public NoteEntity PinnedNote(long userId, long noteId)
+        public NoteEntity PinnedNote( long noteId)
         {
             try
             {
-                return this.noteRL.PinnedNote(userId,noteId);
+                return this.noteRL.PinnedNote(noteId);
             }
             catch (Exception ex)
             {
@@ -83,11 +83,11 @@ namespace BusinessLayer.Service
             }
         }
 
-        public NoteEntity ArchieveNote(long userId, long noteId)
+        public NoteEntity ArchieveNote(long noteId)
         {
             try
             {  
-                return this.noteRL.ArchieveNote(userId,noteId);
+                return this.noteRL.ArchieveNote(noteId);
 
             }
             catch (Exception ex)
@@ -96,11 +96,11 @@ namespace BusinessLayer.Service
                 throw ex;
             }
         }
-        public NoteEntity Trash(long userId, long noteId)
+        public NoteEntity Trash( long noteId)
         {
             try
             {
-                return this.noteRL.Trash(userId, noteId);
+                return this.noteRL.Trash( noteId);
             }
             catch (Exception ex)
             {

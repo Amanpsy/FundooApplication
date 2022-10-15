@@ -119,8 +119,8 @@ namespace FundooApplication.Controllers
         {
             try
             {
-                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
-                var result = this.noteBL.PinnedNote(userId,noteId);
+                
+                var result = this.noteBL.PinnedNote(noteId);
                 if (result.Pinned ==true)
                 {
                     return this.Ok(new { success = true, message = "Note is successfully pinned.", data = result });
@@ -146,8 +146,8 @@ namespace FundooApplication.Controllers
         {
             try
             {
-                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
-                var userdata= noteBL.ArchieveNote(userId,noteId);
+                
+                var userdata= noteBL.ArchieveNote(noteId);
                 if (userdata.Archive == true)
                 {
                     return this.Ok(new { success = true, message = "Archieved successfully", data = userdata });
@@ -175,8 +175,8 @@ namespace FundooApplication.Controllers
         {
             try
             {
-                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
-                var result= noteBL.Trash(userId,noteId);
+             
+                var result= noteBL.Trash(noteId);
                 if(result.Trash== true)
                 {
                     return this.Ok(new { success = true, message = "Note is  Trash successfully.", data = result });

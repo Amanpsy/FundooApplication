@@ -137,11 +137,11 @@ namespace RepositoryLayer.Service
             }
         }
 
-        public NoteEntity PinnedNote(long userId, long noteId)
+        public NoteEntity PinnedNote( long noteId)
         {
             try
             {
-                var result = fundooContext.NoteTable.Where(u => u.UserID == userId && u.NoteId == noteId).FirstOrDefault();
+                var result = fundooContext.NoteTable.Where(u => u.NoteId == noteId).FirstOrDefault();
                 if (result.Pinned == false)
                 {
                     result.Pinned = true;
@@ -163,12 +163,12 @@ namespace RepositoryLayer.Service
             }
         }
 
-        public NoteEntity ArchieveNote(long userId, long noteId)
+        public NoteEntity ArchieveNote(long noteId)
         {
             try
             {
 
-                var result = fundooContext.NoteTable.Where(u => u.UserID == userId && u.NoteId == noteId).FirstOrDefault();
+                var result = fundooContext.NoteTable.Where(u => u.NoteId == noteId).FirstOrDefault();
                 if (result.Archive == true)
                 {
                     result.Archive = false;
@@ -191,11 +191,11 @@ namespace RepositoryLayer.Service
             }
         }
 
-        public NoteEntity Trash(long userId, long noteId)
+        public NoteEntity Trash( long noteId)
         {
             try
             {
-                var result = fundooContext.NoteTable.Where(u => u.UserID == userId && u.NoteId == noteId).FirstOrDefault();
+                var result = fundooContext.NoteTable.Where(u =>  u.NoteId == noteId).FirstOrDefault();
                 if (result.Trash == true)
                 {
                     result.Trash = false;
