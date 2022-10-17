@@ -6,8 +6,10 @@ using System.Text;
 
 namespace BusinessLayer.Interface
 {
-    public interface ICollabBL 
+    public interface ICollabBL
     {
-        public CollabEntity CreateCollab(long userId, long noteId, Collaborator collaborator);
+        public CollabEntity CreateCollab(long UserID, long NoteId, Collaborator collaborator);
+        public List<CollabEntity> GetAllCollab(long UserID);
+        public bool DeleteCollab(long collabId);
     }
 }

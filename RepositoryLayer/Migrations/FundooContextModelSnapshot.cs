@@ -35,12 +35,33 @@ namespace RepositoryLayer.Migrations
                     b.Property<long>("NoteId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("UserId")
+                    b.Property<long>("UserID")
                         .HasColumnType("bigint");
 
                     b.HasKey("CollabId");
 
                     b.ToTable("CollabTable");
+                });
+
+            modelBuilder.Entity("RepositoryLayer.Entities.LabelEntity", b =>
+                {
+                    b.Property<long>("LabelId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("LabelName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("NoteId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserID")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("LabelId");
+
+                    b.ToTable("LabelTable");
                 });
 
             modelBuilder.Entity("RepositoryLayer.Entities.NoteEntity", b =>

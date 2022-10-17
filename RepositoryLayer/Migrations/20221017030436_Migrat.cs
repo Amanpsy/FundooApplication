@@ -3,10 +3,26 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RepositoryLayer.Migrations
 {
-    public partial class SecondMig : Migration
+    public partial class Migrat : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "CollabTable",
+                columns: table => new
+                {
+                    CollabId = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CollabEmail = table.Column<string>(nullable: true),
+                    Edited = table.Column<DateTime>(nullable: false),
+                    UserID = table.Column<long>(nullable: false),
+                    NoteId = table.Column<long>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CollabTable", x => x.CollabId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "NoteTable",
                 columns: table => new
@@ -28,22 +44,30 @@ namespace RepositoryLayer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_NoteTable", x => x.NoteId);
-                    table.ForeignKey(
-                       name: "FK_NoteTable_UserTable_UserID",
-                       column: x => x.UserID,
-                       principalTable: "UserTable",
-                       principalColumn: "UserID",
-                       onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_NoteTable_UserID",
-                table: "NoteTable",
-                column: "UserID");
+            migrationBuilder.CreateTable(
+                name: "UserTable",
+                columns: table => new
+                {
+                    UserID = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    Password = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserTable", x => x.UserID);
+                });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "CollabTable");
+
             migrationBuilder.DropTable(
                 name: "NoteTable");
 

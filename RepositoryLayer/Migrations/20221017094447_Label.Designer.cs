@@ -10,8 +10,8 @@ using RepositoryLayer.Context;
 namespace RepositoryLayer.Migrations
 {
     [DbContext(typeof(FundooContext))]
-    [Migration("20221014182040_Collab")]
-    partial class Collab
+    [Migration("20221017094447_Label")]
+    partial class Label
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,12 +37,33 @@ namespace RepositoryLayer.Migrations
                     b.Property<long>("NoteId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("UserId")
+                    b.Property<long>("UserID")
                         .HasColumnType("bigint");
 
                     b.HasKey("CollabId");
 
                     b.ToTable("CollabTable");
+                });
+
+            modelBuilder.Entity("RepositoryLayer.Entities.LabelEntity", b =>
+                {
+                    b.Property<long>("LabelId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("LabelName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("NoteId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserID")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("LabelId");
+
+                    b.ToTable("LabelTable");
                 });
 
             modelBuilder.Entity("RepositoryLayer.Entities.NoteEntity", b =>

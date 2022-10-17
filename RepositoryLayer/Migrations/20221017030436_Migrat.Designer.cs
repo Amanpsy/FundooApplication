@@ -10,8 +10,8 @@ using RepositoryLayer.Context;
 namespace RepositoryLayer.Migrations
 {
     [DbContext(typeof(FundooContext))]
-    [Migration("20221013182415_Firstmigration")]
-    partial class Firstmigration
+    [Migration("20221017030436_Migrat")]
+    partial class Migrat
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,30 @@ namespace RepositoryLayer.Migrations
                 .HasAnnotation("ProductVersion", "3.1.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("RepositoryLayer.Entities.CollabEntity", b =>
+                {
+                    b.Property<long>("CollabId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CollabEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Edited")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("NoteId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserID")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("CollabId");
+
+                    b.ToTable("CollabTable");
+                });
 
             modelBuilder.Entity("RepositoryLayer.Entities.NoteEntity", b =>
                 {

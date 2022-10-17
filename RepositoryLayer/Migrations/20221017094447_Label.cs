@@ -1,33 +1,31 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RepositoryLayer.Migrations
 {
-    public partial class Collab : Migration
+    public partial class Label : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "CollabTable",
+                name: "LabelTable",
                 columns: table => new
                 {
-                    CollabId = table.Column<long>(nullable: false)
+                    LabelId = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CollabEmail = table.Column<string>(nullable: true),
-                    Edited = table.Column<DateTime>(nullable: false),
-                    UserId = table.Column<long>(nullable: false),
+                    LabelName = table.Column<string>(nullable: true),
+                    UserID = table.Column<long>(nullable: false),
                     NoteId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CollabTable", x => x.CollabId);
+                    table.PrimaryKey("PK_LabelTable", x => x.LabelId);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CollabTable");
+                name: "LabelTable");
         }
     }
 }

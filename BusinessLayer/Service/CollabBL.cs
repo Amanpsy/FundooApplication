@@ -15,11 +15,24 @@ namespace BusinessLayer.Service
         {
             this.collabRL = collabRL;
         }
-        public CollabEntity CreateCollab(long userId, long noteId, Collaborator collaborator)
+    
+        public CollabEntity CreateCollab(long UserID, long NoteId, Collaborator collaborator)
         {
             try
             {
-                return this.collabRL.CreateCollab(userId, noteId, collaborator);
+                return this.collabRL.CreateCollab(UserID, NoteId, collaborator);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public List<CollabEntity> GetAllCollab(long UserID)
+        {
+            try
+            {
+                return this.collabRL.GetAllCollab(UserID);
             }
             catch (Exception ex)
             {
@@ -28,5 +41,17 @@ namespace BusinessLayer.Service
             }
         }
 
+        public bool DeleteCollab(long collabId)
+        {
+            try
+            {
+                return this.collabRL.DeleteCollab(collabId);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
     }
 }

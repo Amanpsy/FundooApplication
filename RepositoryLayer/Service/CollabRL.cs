@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace RepositoryLayer.Service
 {
@@ -17,14 +18,15 @@ namespace RepositoryLayer.Service
         {
             this.fundooContext = fundooContext;
         }
-        public CollabEntity CreateCollab(long userId,long noteId, Collaborator collaborator)
+       
+        public CollabEntity CreateCollab(long UserID, long NoteId,Collaborator collaborator)
         {
             try
             {
                 CollabEntity collabEntity = new CollabEntity();
-                collabEntity.UserId = userId;
-                collabEntity.NoteId = noteId;
-                collabEntity.CollabEmail= collaborator.CollabEmail;
+                collabEntity.UserID = UserID;
+                collabEntity.NoteId = NoteId;
+                collabEntity.CollabEmail = collaborator.CollabEmail;
                 collabEntity.Edited = collaborator.Edited;
                 fundooContext.CollabTable.Add(collabEntity);
                 int result = fundooContext.SaveChanges();
@@ -36,6 +38,43 @@ namespace RepositoryLayer.Service
                 {
                     return null;
                 }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public List<CollabEntity>GetAllCollab(long UserID)
+        {
+            try
+            {
+                var result = fundooContext.CollabTable.Where(u => u.UserID == UserID).ToList();
+                return result;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public bool DeleteCollab(long collabId)
+        {
+            try
+            {
+                var result = fundooContext.CollabTable.Where(u => u.CollabId == collabId).FirstOrDefault();
+                if (result != null)
+                {
+                    fundooContext.CollabTable.Remove(result);
+                    fundooContext.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
             }
             catch (Exception ex)
             {
