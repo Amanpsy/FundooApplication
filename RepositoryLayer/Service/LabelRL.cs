@@ -3,6 +3,7 @@ using RepositoryLayer.Entities;
 using RepositoryLayer.Interface;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Policy;
 using System.Text;
 
@@ -41,5 +42,44 @@ namespace RepositoryLayer.Service
                 throw ex;
             }
         }
+        public List<LabelEntity> GetAllLabel(long userId)
+        {
+            try
+            {
+                var result = fundooContext.LabelTable.Where(u => u.UserID == userId).ToList();
+                return result;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+        public LabelEntity UpdateLabel(long noteId,long labelId, string labelName)
+        {
+            try
+            {
+                var result = fundooContext.LabelTable.Where(u => u.NoteId == noteId && u.LabelId == labelId).FirstOrDefault();
+                if (result != null)
+                {
+                    result.LabelName = labelName;
+                    fundooContext.LabelTable.Update(result);
+                    fundooContext.SaveChanges();
+                    return result;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
     }
 }
