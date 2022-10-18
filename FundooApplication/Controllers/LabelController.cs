@@ -4,6 +4,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System;
+using Microsoft.Extensions.Caching.Distributed;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using RepositoryLayer.Entities;
+using System.Collections.Generic;
+using System.Text;
 
 namespace FundooApplication.Controllers
 {
@@ -15,9 +21,11 @@ namespace FundooApplication.Controllers
     public class LabelController : ControllerBase
     {
         private readonly ILabelBL labelBL;
-        public LabelController(ILabelBL labelBL)
+        private readonly IDistributedCache distributedCache;
+        public LabelController(ILabelBL labelBL, IDistributedCache distributedCache)
         {
             this.labelBL = labelBL;
+            this.distributedCache = distributedCache;
         }
         [HttpPost("CreateLabel")]
         public IActionResult CreateLabel(long UserId, long NoteId, string LabelName)
@@ -44,22 +52,35 @@ namespace FundooApplication.Controllers
             }
         }
         [HttpGet("GetAllLabel")]
-        public IActionResult GetAllLabel()
+        public async Task <IActionResult> GetAllLabel()
         {
             try
             {
                 long userId= Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
-                var result = this.labelBL.GetAllLabel(userId);
-                if (result != null)
+                var cachekey = "LabelList";
+                string serializedLabelList;
+                var labelResult = labelBL.GetAllLabel(userId);
+
+                var redisLabelList = await distributedCache.GetAsync(cachekey);
+                //var result = this.labelBL.GetAllLabel(userId);
+                if (redisLabelList != null)
                 {
-                    return this.Ok(new { success = true, message = "Label Fetched Successfully", data = result });
+                    serializedLabelList = Encoding.UTF8.GetString(redisLabelList);
+                    labelResult = JsonConvert.DeserializeObject<List<LabelEntity>>(serializedLabelList);
                 }
                 else
                 {
-                    return this.BadRequest(new { success = false, message = "Unable to Fetch Label" });
-                }
+                    serializedLabelList = JsonConvert.SerializeObject(labelResult);
+                    redisLabelList = Encoding.UTF8.GetBytes(serializedLabelList);
+                    var options = new DistributedCacheEntryOptions()
+                        .SetAbsoluteExpiration(TimeSpan.FromMinutes(10))
+                        .SetSlidingExpiration(TimeSpan.FromMinutes(2));
 
-              
+                    await distributedCache.SetAsync(cachekey, redisLabelList, options);
+                }
+                return this.Ok(new { success = true, message = "All Label Fetched Successfully", data = labelResult });
+
+
             }
             catch (Exception ex)
             {

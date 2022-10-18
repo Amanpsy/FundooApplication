@@ -4,8 +4,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
+using RepositoryLayer.Entities;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace FundooApplication.Controllers
 {
@@ -15,9 +21,13 @@ namespace FundooApplication.Controllers
     public class NoteController : ControllerBase
     {
         private readonly INoteBL noteBL;
-        public NoteController(INoteBL noteBL)
+     
+
+        private readonly IDistributedCache distributedCache;
+        public NoteController(INoteBL noteBL, IDistributedCache distributedCache)
         {
             this.noteBL = noteBL;
+            this.distributedCache = distributedCache;
         }
     
         [HttpPost("CreateNote")]
@@ -45,28 +55,54 @@ namespace FundooApplication.Controllers
         }
 
         [HttpGet("GetNote")]
-        public IActionResult GetNote()
+        public async Task<IActionResult> GetNote()
         {
             try
             {
                 long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
-                var userdata = noteBL.GetNote(userId);
-                if (userdata != null)
+                var cachekey = Convert.ToString(userId);
+                string serializeddata;
+                List<NoteEntity> result;
+                var distcacheresult = await distributedCache.GetAsync(cachekey);
+                if (distcacheresult != null)
                 {
-                    return this.Ok(new { sucess = true, message = "All notes are here and now you can read your notes", data = userdata });
+                    serializeddata = Encoding.UTF8.GetString(distcacheresult);
+                    result = JsonConvert.DeserializeObject<List<NoteEntity>>(serializeddata);
 
+                    return this.Ok(new { success = true, message = "Note Data fetch Successfully", data = result });
 
                 }
                 else
                 {
-                    return this.BadRequest(new { sucess = false, message = "Unable to get your notes." });
+                    var userdata = noteBL.GetNote(userId);
+                    serializeddata = JsonConvert.SerializeObject(userdata);
+                    distcacheresult = Encoding.UTF8.GetBytes(serializeddata);
+                    var options = new DistributedCacheEntryOptions()
+                        .SetAbsoluteExpiration(TimeSpan.FromMinutes(1))
+                        .SetSlidingExpiration(TimeSpan.FromMinutes(1));
+
+                    await distributedCache.SetAsync(cachekey, distcacheresult, options);
+
+                    if (userdata != null)
+                    {
+
+                        return this.Ok(new { success = true, message = "Note Data fetch Successfully", data = userdata });
+                    }
+                    else
+                    {
+
+                        return this.BadRequest(new { success = false, message = "Not able to fetch notes" });
+                    }
                 }
-            }
+                }
             catch (Exception ex)
             {
 
                 throw ex;
             }
+
+         
+              
         }
         [HttpPut("UpdateNote")]
         public IActionResult UpdateNote(long noteId,Note note)
